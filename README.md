@@ -139,11 +139,27 @@ The backend dynamic API layer is supported by a Launch Template, an Auto Scaling
 
 ![Backend Target Group](Evidence/backend_TG.png)
 
+**Target Group Health Verification:**
+![Target Group Healthy Status](Evidence/evidence_!.png)
+
+**Live API Response Verification:**
+![API Live Response](Evidence/Evidence_2.png)
+
+**Active Directory & Domain Integration:**
+![Active Directory Configuration](Evidence/configuring_users.png)
+
+**User Identity & Authentication Test:**
+![AD User Identity Verification](Evidence/configuring_users_1.png)
+
+**RBAC File Permission Enforcement:**
+![RBAC Permission Test](Evidence/configuring_users_permissions.png)
+
 **Deployment Summary:**
 *   **Launch Template:** Provisioned `starling-node-template` (`lt-00d4bd3781b4354eb`) utilizing `t2.micro` instances, the custom AMI `ami-002192a70217ac181`, and security group `sg-06d9e63e538b680df`.
 *   **Auto Scaling Group:** Deployed `Starling-Backend-ASG` with a desired capacity of 2 and scaling limits set between 2 and 4 instances.
-*   **Target Group:** Configured `Starling-Backend-TG` to route HTTP traffic on port 80 across the registered instances within the VPC.
-
+*   **Target Group:** Configured `Starling-Backend-TG` to route HTTP traffic across registered instances in `us-east-1a` and `us-east-1b`, achieving full health check validation.
+*   **Access Control Validation:** Verified that sysadmin domain users can successfully read restricted system logs, while standard domain users correctly encounter permission denied errors.
+  
 **Instance Initialization Script (User Data):**
 ```bash
 #!/bin/bash
@@ -178,3 +194,5 @@ usermod -aG developers_local arif@starling.digital
 touch /var/log/financial-audit.log
 chown root:sysadmin_local /var/log/financial-audit.log
 chmod 660 /var/log/financial-audit.log
+```
+
