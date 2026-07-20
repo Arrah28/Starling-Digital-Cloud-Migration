@@ -46,7 +46,7 @@ Four distinct security groups have been successfully provisioned within the VPC 
 
 **Security Group Allocations & Rules:**
 
-![Security Groups Configuration](Evidence/image_3d5bdc.jpg)
+![Security Groups Configuration](Evidence/security_project.png)
 
 **Deployment Summary:**
 *   **Starling-ALB-SG** (`sg-0e499c433b99d4e43`): Exposes only the Application Load Balancer to the public internet, acting as the secure entry point for external web traffic.
