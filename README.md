@@ -28,7 +28,7 @@ The automated deployment successfully generated the VPC, enabled DNS resolution,
 **Architectural Resource Map:**
 The visual mapping confirms the strict separation of public and private subnets across two Availability Zones (`us-east-1a` and `us-east-1b`).
 
-![VPC Resource Map](Evidence/Networking%20and%20VPC%202.png)
+![VPC Resource Map](Evidence/Networking and VPC 2.png)
 
 **Deployment Summary:**
 *   **VPC Allocation:** Created isolated virtual network `vpc-001de067afb5c3923` with DNS hostnames and resolution enabled.
