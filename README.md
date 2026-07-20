@@ -101,5 +101,80 @@ The core data and storage infrastructure has been successfully provisioned. This
 *   **DynamoDB (NoSQL):** Successfully deployed the `Starling-Market-Data` table to handle dynamic data. The table is actively configured with a partition key of `SessionID (S)` and a sort key of `Timestamp (N)`.
 *   **Elastic File System (EFS):** Provisioned `Starling-App-Data` (`fs-03553634b1340969e`) to serve as a shared file system for the compute layer. It is configured with General Purpose performance mode and Elastic throughput mode.
 *   **S3 Object Storage:** Created the `starling-regulatory-vault-2026` bucket in the `us-east-1` region. Bucket Versioning has been explicitly Enabled to preserve and recover multiple variants of regulatory objects.
-- [ ] Phase 5: Frontend Deployment
-- [ ] Phase 6: Backend Deployment
+
+- [x] Phase 5: Frontend Deployment
+**Objective:** Deploy a secure, high-availability static web presentation layer using Amazon S3 with public read access and object versioning enabled.
+
+**Results & Evidence:**
+The presentation layer has been provisioned via an S3 bucket configured for public web hosting, protected by a dedicated bucket policy ensuring strict read control.
+
+**S3 Frontend Bucket Configuration:**
+
+![Frontend Bucket Properties](Evidence/Frontend.jpg)
+
+**Public Bucket Policy:**
+
+![Frontend Bucket Policy](Evidence/Frontend_policy.png)
+
+**Deployment Summary:**
+*   **Bucket Allocation:** Created `starling-banking-frontend` in the `us-east-1` region.
+*   **Versioning:** Bucket Versioning has been explicitly enabled to maintain object history and disaster recovery.
+*   **Access Control:** Applied an explicit public read bucket policy allowing `s3:GetObject` actions for public web asset delivery.
+
+- [x] Phase 6: Backend Deployment
+**Objective:** Establish a resilient, auto-scaling API compute layer integrated with Active Directory domain joining, shared EFS storage, and automated User Data initialization.
+
+**Results & Evidence:**
+The backend dynamic API layer is supported by a Launch Template, an Auto Scaling Group spanning multiple availability zones, and a targeted load balancing configuration. The automated User Data script handles DNS mapping, package installation, domain binding, EFS mounting, and RBAC setup on boot.
+
+**Launch Template Configuration:**
+
+![Backend Launch Template](Evidence/Backend_LT.jpg)
+
+**Auto Scaling Group Overview:**
+
+![Backend Auto Scaling Group](Evidence/Backend_ASG.jpg)
+
+**Target Group Configuration:**
+
+![Backend Target Group](Evidence/backend_TG.jpg)
+
+**Deployment Summary:**
+*   **Launch Template:** Provisioned `starling-node-template` (`lt-00d4bd3781b4354eb`) utilizing `t2.micro` instances, the custom AMI `ami-002192a70217ac181`, and security group `sg-06d9e63e538b680df`.
+*   **Auto Scaling Group:** Deployed `Starling-Backend-ASG` with a desired capacity of 2 and scaling limits set between 2 and 4 instances.
+*   **Target Group:** Configured `Starling-Backend-TG` to route HTTP traffic on port 80 across the registered instances within the VPC.
+
+**Instance Initialization Script (User Data):**
+```bash
+#!/bin/bash
+# 1. Fix DNS
+echo "nameserver 10.0.137.229" > /etc/resolv.conf
+echo "nameserver 10.0.148.61" >> /etc/resolv.conf
+ 
+# 2. Update and install packages
+yum update -y
+yum install -y sssd realmd adcli samba-common-tools oddjob oddjob-mkhomedir httpd amazon-efs-utils
+ 
+# 3. Join Domain
+echo "Starling123" | realm join Starling.Digital -U administrator --verbose
+authselect select sssd with-mkhomedir --force
+systemctl restart sssd
+ 
+# 4. Mount EFS in background (&) so it doesn't block the boot process
+mkdir -p /var/www/html
+mount -t efs -o tls fs-03553634b1340969e:/ /var/www/html &
+echo "fs-03553634b1340969e:/ /var/www/html efs _netdev,tls 0 0" >> /etc/fstab
+ 
+# 5. Ensure Web Server starts regardless of mount status
+systemctl start httpd
+systemctl enable httpd
+echo '{"status": "success", "message": "Starling Digital API Ready"}' > /var/www/html/index.html
+ 
+# 6. RBAC Setup
+groupadd sysadmin_local
+groupadd developers_local
+usermod -aG sysadmin_local admin@starling.digital
+usermod -aG developers_local arif@starling.digital
+touch /var/log/financial-audit.log
+chown root:sysadmin_local /var/log/financial-audit.log
+chmod 660 /var/log/financial-audit.log
