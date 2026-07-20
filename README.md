@@ -73,6 +73,33 @@ A managed AWS Simple AD directory was successfully provisioned to handle identit
 *   **Bastion Host Provisioning:** Launched an EC2 instance (`i-0276177c00467ad82`) named `Starling-Bastion` utilizing a `t2.micro` instance type.
 *   **Network Placement:** The bastion is strategically placed in the public subnet (`subnet-04f8345bee0ead881` in `us-east-1a`) to allow secure external ingress.
 *   **Access Routing:** The bastion is reachable externally via Public IPv4 `98.94.40.94` and interfaces with the private network via Private IPv4 `10.0.8.244`.
-- [ ] Phase 4: Storage & Databases
+
+- [x] Phase 4: Storage & Databases
+**Objective:** Provision resilient, scalable, and secure data layers to support both relational and non-relational application requirements, as well as shared and object storage needs.
+
+**Results & Evidence:**
+The core data and storage infrastructure has been successfully provisioned. This deployment features a highly available relational database subnet group, a NoSQL database for session and market data, elastic file storage for backend application data sharing, and a version-controlled object storage vault.
+
+**Relational Database Service (RDS) Subnets:**
+
+![RDS Subnet Group](Evidence/RDS.png)
+
+**DynamoDB Configuration:**
+
+![DynamoDB Table](Evidence/DynamoDB.png)
+
+**Elastic File System (EFS) Configuration:**
+
+![EFS Allocation](Evidence/EFS.png)
+
+**S3 Bucket Configuration:**
+
+![S3 Regulatory Vault](Evidence/S3_Bucket.png)
+
+**Deployment Summary:**
+*   **RDS Subnet Group:** Created `starling-db-subnets` within the isolated VPC `vpc-001de067afb5c3923`. This group explicitly spans private subnets `subnet-099f4b6dd003aa228` (`us-east-1a`) and `subnet-0548af9281417629e` (`us-east-1b`) to ensure database high availability.
+*   **DynamoDB (NoSQL):** Successfully deployed the `Starling-Market-Data` table to handle dynamic data. The table is actively configured with a partition key of `SessionID (S)` and a sort key of `Timestamp (N)`.
+*   **Elastic File System (EFS):** Provisioned `Starling-App-Data` (`fs-03553634b1340969e`) to serve as a shared file system for the compute layer. It is configured with General Purpose performance mode and Elastic throughput mode.
+*   **S3 Object Storage:** Created the `starling-regulatory-vault-2026` bucket in the `us-east-1` region. Bucket Versioning has been explicitly Enabled to preserve and recover multiple variants of regulatory objects.
 - [ ] Phase 5: Frontend Deployment
 - [ ] Phase 6: Backend Deployment
