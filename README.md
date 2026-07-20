@@ -110,7 +110,7 @@ The presentation layer has been provisioned via an S3 bucket configured for publ
 
 **S3 Frontend Bucket Configuration:**
 
-![Frontend Bucket Properties](Evidence/Frontend.jpg)
+![Frontend Bucket Properties](Evidence/Frontend.png)
 
 **Public Bucket Policy:**
 
@@ -129,15 +129,15 @@ The backend dynamic API layer is supported by a Launch Template, an Auto Scaling
 
 **Launch Template Configuration:**
 
-![Backend Launch Template](Evidence/Backend_LT.jpg)
+![Backend Launch Template](Evidence/Backend_LT.png)
 
 **Auto Scaling Group Overview:**
 
-![Backend Auto Scaling Group](Evidence/Backend_ASG.jpg)
+![Backend Auto Scaling Group](Evidence/Backend_ASG.png)
 
 **Target Group Configuration:**
 
-![Backend Target Group](Evidence/backend_TG.jpg)
+![Backend Target Group](Evidence/backend_TG.png)
 
 **Deployment Summary:**
 *   **Launch Template:** Provisioned `starling-node-template` (`lt-00d4bd3781b4354eb`) utilizing `t2.micro` instances, the custom AMI `ami-002192a70217ac181`, and security group `sg-06d9e63e538b680df`.
