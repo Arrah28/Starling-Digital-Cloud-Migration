@@ -23,7 +23,7 @@ The foundational Virtual Private Cloud (VPC) has been successfully provisioned. 
 **Creation Logs & Verification:**
 The automated deployment successfully generated the VPC, enabled DNS resolution, and provisioned the required network gateways.
 
-![VPC Creation Logs](Evidence/Networking%20and%20VPC%201%20.jpg)
+![VPC Creation Logs](Evidence/Networking and VPC 1 .png)
 
 **Architectural Resource Map:**
 The visual mapping confirms the strict separation of public and private subnets across two Availability Zones (`us-east-1a` and `us-east-1b`).
