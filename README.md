@@ -39,6 +39,22 @@ The visual mapping confirms the strict separation of public and private subnets 
 
 
 - [ ] Phase 2: Security Groups
+**Objective:** Implement a defense-in-depth security strategy by configuring strict, stateful firewall rules to enforce least-privilege access across all architectural tiers.
+
+**Results & Evidence:**
+Four distinct security groups have been successfully provisioned within the VPC (`vpc-001de067afb5c3923`). These groups strictly control inbound and outbound traffic flow between the load balancer, bastion host, backend application servers, and the database cluster, ensuring critical internal resources remain completely shielded from public internet exposure.
+
+**Security Group Allocations & Rules:**
+
+![Security Groups Configuration](Evidence/image_3d5bdc.jpg)
+
+**Deployment Summary:**
+*   **Starling-ALB-SG** (`sg-0e499c433b99d4e43`): Exposes only the Application Load Balancer to the public internet, acting as the secure entry point for external web traffic.
+*   **Starling-Bastion-SG** (`sg-0ba875c8661f660a6`): Provides a highly restricted, secure administration point for SSH access into the private subnets.
+*   **Starling-Backend-SG** (`sg-06d9e63e538b680df`): Keeps application servers strictly private. This group is configured to accept incoming traffic *only* from the Application Load Balancer and administrative commands via the Bastion Host.
+*   **Starling-DB-SG** (`sg-0a5c2c8493112b122`): Keeps the database completely isolated. It allows inbound database connections *only* from the verified backend application servers.
+
+  
 - [ ] Phase 3: Identity & Bastion
 - [ ] Phase 4: Storage & Databases
 - [ ] Phase 5: Frontend Deployment
