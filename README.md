@@ -15,6 +15,29 @@ This project involves the architectural overhaul of Sterling Digital Solutions' 
 
 ## Status
 - [ ] Phase 1: Network Foundation (VPC)
+**Objective:** Establish a secure, isolated, and highly available network infrastructure for Sterling Digital Solutions.
+
+**Results & Evidence:**
+The foundational Virtual Private Cloud (VPC) has been successfully provisioned. The architecture utilizes a strict Multi-AZ deployment strategy to ensure high availability, fault tolerance, and network isolation for the backend databases.
+
+**Creation Logs & Verification:**
+The automated deployment successfully generated the VPC, enabled DNS resolution, and provisioned the required network gateways.
+
+![VPC Creation Logs](Evidence/Networking%20and%20VPC%201%20.jpg)
+
+**Architectural Resource Map:**
+The visual mapping confirms the strict separation of public and private subnets across two Availability Zones (`us-east-1a` and `us-east-1b`).
+
+![VPC Resource Map](Evidence/Networking%20and%20VPC%202.png)
+
+**Deployment Summary:**
+*   **VPC Allocation:** Created isolated virtual network `vpc-001de067afb5c3923` with DNS hostnames and resolution enabled.
+*   **Multi-AZ Subnetting:** Deployed 4 distinct subnets (2 public, 2 private) across the `us-east-1a` and `us-east-1b` availability zones.
+*   **Internet Gateway (IGW):** Attached `igw-0e737a172b6226a33` to the public route table to allow external traffic to the presentation layer.
+*   **NAT Gateway:** Allocated Elastic IP `eipalloc-0775653b2d5a91a71` and deployed NAT Gateway `nat-08f82f9082bdac62b` within the public subnet, allowing private database instances to securely download updates without public internet exposure.
+*   **Routing:** Configured specific route tables (`Starling-Digital-rtb-public`, `Starling-Digital-rtb-private1-us-east-1a`, and `Starling-Digital-rtb-private2-us-east-1b`) to strictly control internal and external traffic flow.
+
+
 - [ ] Phase 2: Security Groups
 - [ ] Phase 3: Identity & Bastion
 - [ ] Phase 4: Storage & Databases
