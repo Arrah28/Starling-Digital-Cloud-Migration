@@ -14,7 +14,7 @@ This project involves the architectural overhaul of Sterling Digital Solutions' 
 - `/user-data`: Automation scripts for EC2 instances.
 
 ## Status
-- [ ] Phase 1: Network Foundation (VPC)
+**- [ ] Phase 1: Network Foundation (VPC)**
 **Objective:** Establish a secure, isolated, and highly available network infrastructure for Sterling Digital Solutions.
 
 **Results & Evidence:**
@@ -38,7 +38,8 @@ The visual mapping confirms the strict separation of public and private subnets 
 *   **Routing:** Configured specific route tables (`Starling-Digital-rtb-public`, `Starling-Digital-rtb-private1-us-east-1a`, and `Starling-Digital-rtb-private2-us-east-1b`) to strictly control internal and external traffic flow.
 
 
-- [ ] Phase 2: Security Groups
+
+**- [ ] Phase 2: Security Groups**
 **Objective:** Implement a defense-in-depth security strategy by configuring strict, stateful firewall rules to enforce least-privilege access across all architectural tiers.
 
 **Results & Evidence:**
